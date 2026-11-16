@@ -1,0 +1,5 @@
+opencv-python
+mediapipe
+pycaw; sys_platform == "win32"
+comtypes; sys_platform == "win32"
+pyautogui; sys_platform != "linux"
