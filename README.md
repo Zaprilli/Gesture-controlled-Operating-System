@@ -20,9 +20,6 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 - [🚀 Ажиллуулах заавар](#-ажиллуулах-заавар)
   - [🪟 Windows](#-windows)
     - [WSL](#-wsl-windows-subsystem-for-linux)
-  - [🐧 Linux](#-linux)
-    - [Oracle VM VirtualBox](#-oracle-vm-virtualbox-дээр-linux)
-  - [🍎 macOS](#-macos)
   - [▶️ Эхлэлтийн тайлан](#-эхлэлтийн-тайлан)
 - [⚙️ Тохиргоо](#-тохиргоо)
 - [📁 Төслийн бүтэц](#-төслийн-бүтэц)
@@ -40,8 +37,7 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 - 🤏 **TAP** — чимхээд хурдан тайлахад дуу тагдана; **DRAG** — чимхсэн хэвээр
   чирэхэд дуу/гэрэл өөрчлөгдөнө
 - ⏸️ `space` = түр зогсоох/үргэлжлүүлэх, `q` = гарах
-- 🖥️ **Windows 10/11** (шууд), **WSL**, **Linux** (Arch/Debian/Fedora болон
-  **Oracle VM VirtualBox** дээрх гост), **macOS**
+- 🖥️ **Windows 10/11** (шууд, **WSL** хамт)
 - 📋 Аливаа **шинэ горимд орохын өмнө** доорх шаардлагын тайланг хэвлэж,
   дутуу зүйлийг суулгах командтай нь хамт харуулна
 
@@ -125,27 +121,24 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 | Зүйл | Юунд хэрэгтэй | Шалгах / суулгах |
 |---|---|---|
 | **Python 3.10+** | гол хэл | `python3 --version` |
-| **opencv-python, mediapipe** | камер + гар таних загвар | `pip install -r hand_control/requirements.txt` (эсвэл ОС-ийнхээ `requirements-linux.txt` / `requirements-windows.txt` / `requirements-macos.txt`) |
+| **opencv-python, mediapipe** | камер + гар таних загвар | `pip install -r hand_control/requirements.txt` (`hand_control/requirements-windows.txt`) |
 | **`models/hand_landmarker.task`** | гар таних загвар | Төсөлд **багтсан**, татаж авах шаардлагагүй |
-| **Вебкамер (index 0)** | нүд | Linux: `ls /dev/video*`; Windows: Camera privacy шалгах |
+| **Вебкамер (index 0)** | нүд | Windows: Camera privacy → Desktop apps |
 
 ### ОС-ийн нэмэлт хэрэгсэл (алийг нь суулгаагүй бол тухайн үйлдэл ажиллахгүй)
 
-| Үйлдэл | 🐧 Linux | 🪟 Windows | 🍎 macOS |
-|---|---|---|---|
-| **Дуу (VOLUME)** | `pactl` — Arch: `sudo pacman -S libpulse` / Debian: `sudo apt install pulseaudio-utils` | `pycaw` + `comtypes` (pip-ээр сууна) | `osascript` (системд байрлай) |
-| **Гэрэл (BRIGHTNESS)** | `brightnessctl` — `sudo pacman -S brightnessctl` / `sudo apt install brightnessctl` (**зоосв нотбук**) | ❌ ажиллахгүй | ✅ дотоод дэлгээрийн гэрэл (суулгах шаардлагагүй) |
-| **Сум (ARROW)** | `xdotool` (X11) / `wtype` (Wayland) — **session-аас автоматаар сонгодог** | `pyautogui` (pip-ээр сууна) | `pyautogui` (pip-ээр сууна) |
-| **Камер** | `/dev/video*` + `video` групп эрх | Camera privacy → Desktop apps | System Settings → Camera зөвшөөрөл |
+| Үйлдэл | 🪟 Windows |
+|---|---|
+|---|---|
+| **Дуу (VOLUME)** | `pycaw` + `comtypes` (pip-ээр сууна) |
+| **Гэрэл (BRIGHTNESS)** | ❌ ажиллахгүй |
+| **Сум (ARROW)** | `pyautogui` (pip-ээр сууна) |
+| **Камер** | Camera privacy → Desktop apps |
 
 - **WSL** нэмэлтээр: камерыг Windows-оос дамжуулах (`usbipd-win`), дуу/цонх = WSLg
-- **Oracle VM VirtualBox** нэмэлтээр: **Extension Pack** (камер дамжуулалт),
-  гост дээрх камерын эрх; виртуал машинд **гэрлийн бүрэлдэхүүн байдаггүй** тул
-  BRIGHTNESS MODE ажиллахгүй (хэвийн үзэгдэл)
 
 ## 🚀 Ажиллуулах заавар
 
-**Өөрийн үйлдлийн системээ сонгоно уу:** 🪟 [Windows](#-windows) · 🐧 [Linux](#-linux) · 🍎 [macOS](#-macos)
 
 ### 0. Код татаж авах (бүх платформ)
 
@@ -251,7 +244,6 @@ sudo apt install -y python3 python3-venv python3-pip \
 
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r hand_control/requirements-linux.txt
 
 python3 hand_control/main.py
 ```
@@ -265,110 +257,6 @@ python3 hand_control/main.py
 >
 > 🔊 Дуу: `pactl info` → `Server String: ... pulse/native` гарвал WSLg аудио
 > идэвхтэй. Windows 10 дээр байхгүй тул Windows руу шилжинэ үү.
-
----
-
-### 🐧 Linux
-
-```bash
-# 1. Номын сангууд
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r hand_control/requirements-linux.txt
-
-# 2. Дуу (VOLUME) — тухайн дистрибуциас:
-```
-
-| Дистрибуци | Команд |
-|---|---|
-| Arch / Manjaro / CachyOS | `sudo pacman -S libpulse` (PipeWire: `pipewire-pulse`) |
-| Debian / Ubuntu | `sudo apt install pulseaudio-utils` |
-| Fedora | `sudo dnf install pulseaudio-utils` |
-
-```bash
-# 3. Гэрэл + сум (зоосв нотбук; сум = X11 буюу Wayland-аас хамаарна)
-sudo pacman -S brightnessctl xdotool wtype     # Arch
-sudo apt install brightnessctl xdotool wtype   # Debian/Ubuntu
-
-# 4. Камерын эрх (нэг удаа; дараа сессиондоо дахин нэвтрэх)
-sudo usermod -aG video $USER
-
-# 5. Ажиллуулна
-python3 hand_control/main.py
-```
-
-> 💡 **KDE / GNOME (Wayland)** дээр ийм warning гарч болно —
-> `Could not find the Qt platform plugin "wayland"`. Цонх **гарч л байвал
-> асуудалгүй**. Урьдчилан дарахыг хүсвэл:
-> ```bash
-> QT_QPA_PLATFORM=xcb python3 hand_control/main.py
-> ```
-
----
-
-#### 📦 Oracle VM VirtualBox дээр Linux
-
-Нэмэлтээрээ: **Oracle VM VirtualBox** + **Extension Pack** (камер дамжуулалт
-зөвхөн Extension Pack-аас хамаарна).
-
-**1. VirtualBox + Extension Pack суулгах**
-
-1. [virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)-оос
-   VirtualBox болон **VirtualBox Extension Pack** (All platforms) татаж авна
-2. Extension Pack-ийг суулгах: VirtualBox → `File → Extensions → Install`
-   (эсвэл `sudo VBoxManage extpack install VirtualBox_Extension_Pack*.vbox-extpack`)
-3. Ubuntu / Arch / бусад Linux ISO татаж аваад **гост машин үүсгэнэ**
-   (Memory ≥ 4GB, 2+ CPU зөвлөмж)
-
-**2. Камерыг гост руу дамжуулах**
-
-1. Гост **ажиллаж байх** үед менюгээс: **Devices → Webcam → Integrated Camera**
-   (санаа зовохгүйгээр идэвхжүүлнэ — гост дээр `/dev/video0` гарна)
-2. Эсвэл урьдчилан USB filter үүсгэх:
-   `Settings → USB → Add New Filter → Integrated Camera`
-3. Хэрэв **Webcam цэс байхгүй** бол: Extension Pack суугаагүй, эсвэл
-   VirtualBox хувилбар Extension Pack-ийн хувилбартайгаа таарахгүй байна
-
-**3. Гост дээр шалгах**
-
-```bash
-ls /dev/video*                                  # /dev/video0 гарвал боллоо
-groups | grep video || sudo usermod -aG video $USER   # эрх (дараа нэвтрэлт)
-pactl --version                                  # дуу (VM audio → PulseAudio/PipeWire)
-brightnessctl -m 2>/dev/null || echo "no backlight (VM — BRIGHTNESS ажиллахгүй)"
-```
-
-**4. Суулгаж ажиллуулах** (гост дээр, дээрх Linux зааврын дагуу)
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r hand_control/requirements-linux.txt
-python3 hand_control/main.py
-```
-
-> ⚠️ **Виртуал машинд гэрэл тохируулах бүрэлдэхүүн байдаггүй** (`/sys/class/backlight`
-> байхгүй) — BRIGHTNESS MODE ажиллахгүй, программ эхлэлтээрээ мэдэгдэл хэвлэнэ.
-> Бусад горим (VOLUME / ARROW) хэвээр ажиллана. Энэ нь алдаа биш юм.
->
-> 💡 Зөвлөмж: гост дээр **X11 сесс** сонговол `xdotool` шууд ажиллана;
-> Wayland бол `wtype` суулгана уу.
-
----
-
-### 🍎 macOS
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r hand_control/requirements-macos.txt
-python3 hand_control/main.py
-```
-
-- Анх удаа **камерын зөвшөөрөл** асуух болно —
-  `System Settings → Privacy & Security → Camera` (терминалд) өгнө үү
-- Дуу = `osascript`, сум = `pyautogui`, **гэрэл = дотоод дэлгээрийн гэрэл**
-  (суулгах шаардлагагүй; зөвхөн MacBook/iMac-ийн дотоод дэлгээрийг дэмжинэ)
 
 ---
 
@@ -386,9 +274,9 @@ python3 hand_control/main.py
   [OK]    ZAGVAR (hand_landmarker)  : models/hand_landmarker.task
   [OK]    KAMERA (index 0)          : oldloo
   --- OS-iin nemelt herelse: alii uildel ajillana ---
-  [OK]    pactl (DUU)               : /usr/bin/pactl
-  [OK]    brightnessctl (GEREL)     : /usr/bin/brightnessctl
-  [OK]    SUM (wayland)             : /usr/bin/wtype
+  [OK]    pycaw/comtypes (DUU)      : суусан
+  [OK]    pyautogui (SUM)           : суусан
+  [TAANI]  GEREL                     : zovhon Linux d ajillana
 ==============================================================
   Bund buh UNDSEN shaardlaga hangagsan - ajillulj bolno!
 ==============================================================
@@ -409,7 +297,9 @@ TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit
 Дутуу зүйлтэй жишээ:
 
 ```text
-  [TAANI]  pactl (DUU)               : suugaagui
+  [TAANI]  pycaw/comtypes (DUU)      : suugaagui
+          -> VOLUME MODE ajillahgui!
+             pip install pycaw comtypes
           -> VOLUME MODE ajillahgui!
              Arch: sudo pacman -S libpulse
              Debian/Ubuntu: sudo apt install pulseaudio-utils
@@ -443,9 +333,7 @@ TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit
 │   ├── brightness_control.py     #    гэрэл: brightnessctl (Linux) / дотоод дэлгээрийн гэрэл (macOS)
 │   ├── arrowkey.py               #    сум: session-аас xdotool (X11)/wtype (Wayland) / pyautogui
 │   ├── requirements.txt          #    бүх платформт нэг файл (энхийлмээр)
-│   ├── requirements-linux.txt    #    🐧 Linux (Arch/Debian/Fedora/WSL/VM)
-│   ├── requirements-windows.txt  #    🪟 Windows (pycaw, comtypes, pyautogui)
-│   └── requirements-macos.txt    #    🍎 macOS (pyautogui; үлдсэн нь системийнх)
+│   └── requirements-windows.txt  #    🪟 Windows (pycaw, comtypes, pyautogui)
 ├── models/
 │   └── hand_landmarker.task      # MediaPipe гар таних загвар (git-д багтсан)
 ├── README.md                     # энэ файл
@@ -474,9 +362,7 @@ python3 hand_control/main.py
 6. **ARROW** → индексийн үзүүрийн хөдөлгөөнийг `ARROW_DEAD` → `ARROW_HOLD_S`
    → `ARROW_COOLDOWN_S` шүүлтээр дамжуулж товчлуур дарна
 7. **Үр дүнгээ** тухайн платформын API-рүү шууд хүргэнэ:
-   - Linux → `pactl` / `brightnessctl` / `xdotool`·`wtype` (session-аас өөрөө сонгоно)
    - Windows → `pycaw` / `pyautogui`
-   - macOS → `osascript` / дотоод дэлгээрийн гэрэл (`DisplayServices`) / `pyautogui`
 
 ### Чичрэлээс хамгаалах (deadband + hysteresis)
 
@@ -520,57 +406,6 @@ OpenCV цонх **фокустай** байх ёстой — цонхоо дар
 (ARROW MODE-д бусад руу шилжсэн бол сум хэвээр ажиллана, `space`/`q` зөвхөн
 цонхоо буцааж сонголгон дарахад орно.)
 
-### 🐧 Linux
-
-#### `pactl oldsongui` / дуу өөрчлөгдөхгүй байна
-
-| Дистрибуци | Команд |
-|---|---|
-| Arch / Manjaro / CachyOS | `sudo pacman -S libpulse` (PipeWire: `sudo pacman -S pipewire-pulse`) |
-| Debian / Ubuntu | `sudo apt install pulseaudio-utils` |
-| Fedora | `sudo dnf install pulseaudio-utils` |
-
-PipeWire дээр дуугүй бол: `systemctl --user restart pipewire-pulse`.
-Зөв sink сонгогдсон эсэх: `pactl get-sink-volume @DEFAULT_SINK@`.
-
-#### `brightnessctl oldsongui` / гэрэл өөрчлөгдөхгүй
-
-```bash
-brightnessctl -m        # утга гарвал болно (жишээ: intel_backlight,...,79%,...)
-```
-
-- Зөвхөн **зоосв нотбук** дээр ажиллана — **desktop** компьютерт backlight
-  байхгүй бол BRIGHTNESS MODE идэвхгүй байна (мэдэгдэл хэвлэгдэнэ)
-- Эрх дутуу бол: `sudo usermod -aG video $USER` (дараа сессиондоо дахин нэвтрэх)
-- **Virtual Machine** дээр backlight байдаггүй → хэвийн үзэгдэл
-
-#### Сум (ARROW) ажиллахгүй байна
-
-Программ **ийм дарааллаар өөрөө сонгодог**: `XDG_SESSION_TYPE` (эсвэл
-`WAYLAND_DISPLAY`/`DISPLAY`) → **Wayland бол `wtype`**, **X11 бол `xdotool`**
-(аль нь нь суусан байна). Эхлэлтийн тайлан дээр ямар session илрүүлсэн, аль
-хэрэгсэл сонгогдсоныг `SUM (wayland)` / `SUM (x11)` мөрөөр харна уу.
-
-```bash
-echo $XDG_SESSION_TYPE     # x11 | wayland
-xdotool --version           # X11 дээр
-wtype --version             # Wayland дээр
-```
-
-- Аль нь ч байхгүй бол: `sudo pacman -S xdotool wtype` /
-  `sudo apt install xdotool wtype` (эсвэл **session-д таарах нэгийг** нь суулга)
-- Session-тай **тохирохгүй** хэрэгсэл суусан бол (`wtype` байхад X11 гэх мэт)
-  программ анхааруулга хэвлэнэ — тэгэхээр суулгахаа зөв сонгоно уу
-- **Сум нь фокустай цонх руу явна** — зорилготой программыа идэвхтэй болгоно уу
-
-#### `Could not find the Qt platform plugin "wayland"`
-
-Зөвхөн **warning** — цонх гарч байвал асуудалгүй. Гарахгүй бол:
-
-```bash
-QT_QPA_PLATFORM=xcb python3 hand_control/main.py
-```
-
 ### 🪟 Windows
 
 #### `pycaw` / `pyautogui` талаарх мэдэгдэл гарч байна
@@ -606,17 +441,6 @@ pactl info     # "Server String: ... pulse/native" гарвал WSLg аудио 
 
 Windows 10 дээр WSLg байхгүй → Windows-д шууд суулгана уу, эсвэл Windows 11 рүү
 шилжүүлнэ үү.
-
-### 🍎 macOS
-
-- **Камерын зөвшөөрөл:** `System Settings → Privacy & Security → Camera`-аас
-  терминал (Terminal / iTerm / VS Code) -д өгнө үү, дараа терминалыг дахин нээнэ
-- **Дуу:** `osascript -e "set volume output volume 50"` ажиллаж байгаа эсэхийг
-  шалгана уу (Automation зөвшөөрөл шаардаж магадгүй)
-- **Гэрэл:** эхлэлтийн тайлан дээр `[OK] GEREL (dotood deleger)` гарвал бэлэн.
-  `[TAANI]` гарвал macOS шинэчлэлт private API-г хаасан, эсвэл **гадаад
-  monitor** (гадаад дэлгээрийг macOS энэ аргаар тохируулахгүй) байна — энэ
-  тохиолдолд BRIGHTNESS MODE идэвхгүй, бусад горим хэвээр ажиллана
 
 ## 📜 Лиценз
 

@@ -1,8 +1,0 @@
-# 🐧 Linux (Arch / Debian / Fedora / WSL / Oracle VM guest)
-# ОС-ийн нэмэлт хэрэгсэл pip-ээр суухгүй — тусгай суулгана:
-#   Дуу:      sudo pacman -S libpulse        / sudo apt install pulseaudio-utils
-#   Гэрэл:    sudo pacman -S brightnessctl   / sudo apt install brightnessctl
-#   Сум(X11): sudo pacman -S xdotool         / sudo apt install xdotool
-#   Сум(Wayland): sudo pacman -S wtype
-opencv-python
-mediapipe
