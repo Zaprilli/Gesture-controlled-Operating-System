@@ -158,24 +158,53 @@ cd Gesture-controlled-Operating-System
 
 ### 🪟 Windows
 
-**Шаардлага:** Windows 10/11, Python 3.10+ ([python.org](https://www.python.org/downloads/) суулгахдаа *Add to PATH*),
-вебкамер.
+**Шаардлага:** Windows 10/11, вебкамер. Эхлээд **Git (Git Bash)** болон
+**Python**-ийг PowerShell-ээр суулгана:
+
+**1. Программууд суулгах (PowerShell)**
 
 ```powershell
-# 1. Virtual environment үүсгэнэ
+# Git + Git Bash — код татах
+winget install --id Git.Git -e
+
+# Python 3.12 (суулгахдаа PATH-д нэмэгдэнэ)
+winget install --id Python.Python.3.12 -e
+
+# Шинэ PowerShell цонх нээж шалгана (энгийн цонхыг шинэчлэнэ үү):
+git --version        # git version 2.x  -> Git бэлэн
+python --version     # Python 3.10+ байх ёстой
+```
+
+> 💡 `winget` байхгүй бол (Windows 10-ийн хуучин хувилбар) албан ёсноос татна:
+> [git-scm.com/downloads](https://git-scm.com/downloads) — **Git Bash**-тай
+> сууна / [python.org/downloads](https://www.python.org/downloads/) — суулгахдаа
+> **"Add Python to PATH"** заавал тэмдэглэнэ үү.
+
+**2. Код татаж, суулгаж, ажиллуулах (PowerShell)**
+
+```powershell
+# Код татах (эсвэл дээрх "0. Код татаж авах" хэсгийн командыг ашиглана)
+git clone https://github.com/Zaprilli/Gesture-controlled-Operating-System.git
+cd Gesture-controlled-Operating-System
+
+# Virtual environment үүсгэнэ
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
-# 2. Номын сангууд (pycaw, comtypes, pyautogui Windows дээр автоматаар сууна)
+# Номын сангууд (pycaw, comtypes, pyautogui Windows дээр автоматаар сууна)
 pip install -r hand_control\requirements-windows.txt
 
-# 3. Ажиллуулна
+# Ажиллуулна
 python hand_control\main.py
 ```
 
 > ⚠️ PowerShell дээр `Activate.ps1` алдаа гарвал (execution policy):
 > `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`
 > командийг эхлээд гүйцэтгэнэ үү.
+>
+> 💡 **Git Bash** ашиглах бол орчинг иймэрхүү нээнэ:
+> `source .venv/Scripts/activate` — бусад команд (`git`, `pip`, `python`)
+> Git Bash-д ч ижил ажиллана.
 
 > 📷 **Анх удаа** камер ашиглахыг Windows асуух болно —
 > `Settings → Privacy & Security → Camera → Desktop apps`-ийг **zөвхөрүүлнэ үү**.
