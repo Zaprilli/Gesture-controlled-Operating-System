@@ -1,7 +1,0 @@
-# 🪟 Windows 10/11 (шууд суулгалт)
-# Гэрэл (BRIGHTNESS) Windows дээр дэмжигдэхгүй.
-opencv-python
-mediapipe
-pycaw
-comtypes
-pyautogui
