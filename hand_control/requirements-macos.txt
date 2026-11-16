@@ -1,0 +1,6 @@
+# 🍎 macOS
+# Дуу = osascript, гэрэл = дотоод дэлгээрийн гэрэл (DisplayServices/CoreDisplay)
+# — бүгд системд байрлай, нэмэлт pip-пакет шаардлагагүй.
+opencv-python
+mediapipe
+pyautogui

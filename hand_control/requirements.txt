@@ -1,3 +1,8 @@
+# Бүх платформт (нэг команд):  pip install -r hand_control/requirements.txt
+# Эсвэл ОС-ийнхээ тусдаа файлаар:
+#   Linux:   pip install -r hand_control/requirements-linux.txt
+#   Windows: pip install -r hand_control/requirements-windows.txt
+#   macOS:   pip install -r hand_control/requirements-macos.txt
 opencv-python
 mediapipe
 pycaw; sys_platform == "win32"

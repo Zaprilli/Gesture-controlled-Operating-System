@@ -19,9 +19,9 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 - [💻 Шаардлага](#-шаардлага)
 - [🚀 Ажиллуулах заавар](#-ажиллуулах-заавар)
   - [🪟 Windows](#-windows)
-  - [🪟 WSL (Windows Subsystem for Linux)](#-wsl-windows-subsystem-for-linux)
+    - [WSL](#-wsl-windows-subsystem-for-linux)
   - [🐧 Linux](#-linux)
-  - [📦 Oracle VM VirtualBox дээр Linux](#-oracle-vm-virtualbox-дээр-linux)
+    - [Oracle VM VirtualBox](#-oracle-vm-virtualbox-дээр-linux)
   - [🍎 macOS](#-macos)
   - [▶️ Эхлэлтийн тайлан](#-эхлэлтийн-тайлан)
 - [⚙️ Тохиргоо](#-тохиргоо)
@@ -125,7 +125,7 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 | Зүйл | Юунд хэрэгтэй | Шалгах / суулгах |
 |---|---|---|
 | **Python 3.10+** | гол хэл | `python3 --version` |
-| **opencv-python, mediapipe** | камер + гар таних загвар | `pip install -r hand_control/requirements.txt` |
+| **opencv-python, mediapipe** | камер + гар таних загвар | `pip install -r hand_control/requirements.txt` (эсвэл ОС-ийнхээ `requirements-linux.txt` / `requirements-windows.txt` / `requirements-macos.txt`) |
 | **`models/hand_landmarker.task`** | гар таних загвар | Төсөлд **багтсан**, татаж авах шаардлагагүй |
 | **Вебкамер (index 0)** | нүд | Linux: `ls /dev/video*`; Windows: Camera privacy шалгах |
 
@@ -144,6 +144,8 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
   BRIGHTNESS MODE ажиллахгүй (хэвийн үзэгдэл)
 
 ## 🚀 Ажиллуулах заавар
+
+**Өөрийн үйлдлийн системээ сонгоно уу:** 🪟 [Windows](#-windows) · 🐧 [Linux](#-linux) · 🍎 [macOS](#-macos)
 
 ### 0. Код татаж авах (бүх платформ)
 
@@ -165,7 +167,7 @@ py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
 # 2. Номын сангууд (pycaw, comtypes, pyautogui Windows дээр автоматаар сууна)
-pip install -r hand_control\requirements.txt
+pip install -r hand_control\requirements-windows.txt
 
 # 3. Ажиллуулна
 python hand_control\main.py
@@ -183,7 +185,7 @@ python hand_control\main.py
 
 ---
 
-### 🪟 WSL (Windows Subsystem for Linux)
+#### 🪟 WSL (Windows Subsystem for Linux)
 
 WSL нь анхдагчаа **камерыг хардаггүй** — камерыг Windows-оос WSL рүү
 дамжуулах (passthrough) хэрэгтэй. **WSLg** (Windows 11) цонх + дууг дэмждэг.
@@ -220,7 +222,7 @@ sudo apt install -y python3 python3-venv python3-pip \
 
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r hand_control/requirements.txt
+pip install -r hand_control/requirements-linux.txt
 
 python3 hand_control/main.py
 ```
@@ -243,7 +245,7 @@ python3 hand_control/main.py
 # 1. Номын сангууд
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r hand_control/requirements.txt
+pip install -r hand_control/requirements-linux.txt
 
 # 2. Дуу (VOLUME) — тухайн дистрибуциас:
 ```
@@ -275,7 +277,7 @@ python3 hand_control/main.py
 
 ---
 
-### 📦 Oracle VM VirtualBox дээр Linux
+#### 📦 Oracle VM VirtualBox дээр Linux
 
 Нэмэлтээрээ: **Oracle VM VirtualBox** + **Extension Pack** (камер дамжуулалт
 зөвхөн Extension Pack-аас хамаарна).
@@ -312,7 +314,7 @@ brightnessctl -m 2>/dev/null || echo "no backlight (VM — BRIGHTNESS ажилл
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r hand_control/requirements.txt
+pip install -r hand_control/requirements-linux.txt
 python3 hand_control/main.py
 ```
 
@@ -330,7 +332,7 @@ python3 hand_control/main.py
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r hand_control/requirements.txt
+pip install -r hand_control/requirements-macos.txt
 python3 hand_control/main.py
 ```
 
@@ -411,7 +413,10 @@ TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit
 │   ├── volume_control.py         #    дуу: pactl (Linux) / pycaw (Windows) / osascript (macOS)
 │   ├── brightness_control.py     #    гэрэл: brightnessctl (Linux) / дотоод дэлгээрийн гэрэл (macOS)
 │   ├── arrowkey.py               #    сум: session-аас xdotool (X11)/wtype (Wayland) / pyautogui
-│   └── requirements.txt          #    шаардлагатай Python номын сангууд
+│   ├── requirements.txt          #    бүх платформт нэг файл (энхийлмээр)
+│   ├── requirements-linux.txt    #    🐧 Linux (Arch/Debian/Fedora/WSL/VM)
+│   ├── requirements-windows.txt  #    🪟 Windows (pycaw, comtypes, pyautogui)
+│   └── requirements-macos.txt    #    🍎 macOS (pyautogui; үлдсэн нь системийнх)
 ├── models/
 │   └── hand_landmarker.task      # MediaPipe гар таних загвар (git-д багтсан)
 ├── README.md                     # энэ файл
@@ -537,32 +542,12 @@ wtype --version             # Wayland дээр
 QT_QPA_PLATFORM=xcb python3 hand_control/main.py
 ```
 
-### 🪟 WSL
-
-#### WSL дээр `/dev/video*` байхгүй байна
-
-1. `usbipd --version` суугаагүй бол: `winget install --id dorssel.usbipd-win`
-2. `usbipd list` → State нь **Attached** эсэх шалгах
-3. Дахин холбох: `wsl --update` → `wsl --shutdown` → `usbipd attach --wsl --busid <BUSID>`
-4. Камер **Windows-аар** (Teams/Zoom) нээгдсэн байж магадгүй — тэдгээрийг хаана уу
-5. Хэвээрээ байхгүй бол WSL-ийн **kernel шинэчлэх**: Windows-аас `wsl --update`
-
-#### WSL дээр `pactl` ажиллахгүй байна
-
-```bash
-sudo apt install pulseaudio-utils
-pactl info     # "Server String: ... pulse/native" гарвал WSLg аудио идэвхтэй
-```
-
-Windows 10 дээр WSLg байхгүй → Windows-д шууд суулгана уу, эсвэл Windows 11 рүү
-шилжүүлнэ үү.
-
 ### 🪟 Windows
 
 #### `pycaw` / `pyautogui` талаарх мэдэгдэл гарч байна
 
 ```powershell
-pip install -r hand_control\requirements.txt
+pip install -r hand_control\requirements-windows.txt
 ```
 
 Программ эхлэлтээрээ аль модулийг суулгахаа хэвлэж өгнө — тухайн командыг
@@ -572,6 +557,26 @@ pip install -r hand_control\requirements.txt
 
 `Settings → Privacy & Security → Camera → Let desktop apps access your camera`
 → **ON**.
+
+#### 🪟 WSL
+
+##### WSL дээр `/dev/video*` байхгүй байна
+
+1. `usbipd --version` суугаагүй бол: `winget install --id dorssel.usbipd-win`
+2. `usbipd list` → State нь **Attached** эсэх шалгах
+3. Дахин холбох: `wsl --update` → `wsl --shutdown` → `usbipd attach --wsl --busid <BUSID>`
+4. Камер **Windows-аар** (Teams/Zoom) нээгдсэн байж магадгүй — тэдгээрийг хаана уу
+5. Хэвээрээ байхгүй бол WSL-ийн **kernel шинэчлэх**: Windows-аас `wsl --update`
+
+##### WSL дээр `pactl` ажиллахгүй байна
+
+```bash
+sudo apt install pulseaudio-utils
+pactl info     # "Server String: ... pulse/native" гарвал WSLg аудио идэвхтэй
+```
+
+Windows 10 дээр WSLg байхгүй → Windows-д шууд суулгана уу, эсвэл Windows 11 рүү
+шилжүүлнэ үү.
 
 ### 🍎 macOS
 
