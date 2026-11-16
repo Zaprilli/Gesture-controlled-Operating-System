@@ -84,8 +84,13 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 |---|---|---|
 | **DRAG** | Чимхсэн хэвээр гараа **дээш/доош** чирэх | Дэлгэцийн гэрэл нэмэгдэнэ / хасагдана |
 
-- Зөвхөн **`brightnessctl`** (Linux, зонов нотбук) дээр ажиллана — Windows /
-  macOS / виртуал машинд гэрлийн тохиргоо байхгүй тул уг горим идэвхгүй байна
+- Зөвхөн **зоосв нотбук** дээр ажиллана:
+  - 🐧 Linux → **`brightnessctl`**
+  - 🍎 macOS → **дотоод дэлгээрийн гэрэл** (суулгах шаардлагагүй, Apple-ийн
+    `DisplayServices`/`CoreDisplay` API; зөвхөн MacBook/iMac-ийн **дотоод**
+    дэлгээрийг дэмжинэ — гадаад monitor биш)
+  - 🪟 Windows / виртуал машинд гэрлийн тохиргоо байхгүй тул уг горим идэвхгүй
+    байна
 - Гэрлийн доод хязгаар **1%**
 
 ### 4️⃣ ARROW KEY MODE (3 хуруу эсвэл чимхэлт)
@@ -129,7 +134,7 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 | Үйлдэл | 🐧 Linux | 🪟 Windows | 🍎 macOS |
 |---|---|---|---|
 | **Дуу (VOLUME)** | `pactl` — Arch: `sudo pacman -S libpulse` / Debian: `sudo apt install pulseaudio-utils` | `pycaw` + `comtypes` (pip-ээр сууна) | `osascript` (системд байрлай) |
-| **Гэрэл (BRIGHTNESS)** | `brightnessctl` — `sudo pacman -S brightnessctl` / `sudo apt install brightnessctl` (**зоосв нотбук**) | ❌ ажиллахгүй | ❌ ажиллахгүй |
+| **Гэрэл (BRIGHTNESS)** | `brightnessctl` — `sudo pacman -S brightnessctl` / `sudo apt install brightnessctl` (**зоосв нотбук**) | ❌ ажиллахгүй | ✅ дотоод дэлгээрийн гэрэл (суулгах шаардлагагүй) |
 | **Сум (ARROW)** | `xdotool` (X11) эсвэл `wtype` (Wayland) | `pyautogui` (pip-ээр сууна) | `pyautogui` (pip-ээр сууна) |
 | **Камер** | `/dev/video*` + `video` групп эрх | Camera privacy → Desktop apps | System Settings → Camera зөвшөөрөл |
 
@@ -173,7 +178,8 @@ python hand_control\main.py
 > 📷 **Анх удаа** камер ашиглахыг Windows асуух болно —
 > `Settings → Privacy & Security → Camera → Desktop apps`-ийг **zөвхөрүүлнэ үү**.
 
-> ❌ **Гэрэл (BRIGHTNESS)** Windows дээр ажиллахгүй — энэ нь хэвийн (зөвхөн Linux).
+> ❌ **Гэрэл (BRIGHTNESS)** Windows дээр ажиллахгүй — энэ нь хэвийн (дэмжих
+> платформ: Linux / macOS).
 
 ---
 
@@ -330,7 +336,8 @@ python3 hand_control/main.py
 
 - Анх удаа **камерын зөвшөөрөл** асуух болно —
   `System Settings → Privacy & Security → Camera` (терминалд) өгнө үү
-- Дуу = `osascript`, сум = `pyautogui`; **гэрэл = ажиллахгүй** (Linux only)
+- Дуу = `osascript`, сум = `pyautogui`, **гэрэл = дотоод дэлгээрийн гэрэл**
+  (суулгах шаардлагагүй; зөвхөн MacBook/iMac-ийн дотоод дэлгээрийг дэмжинэ)
 
 ---
 
@@ -402,13 +409,11 @@ TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit
 ├── hand_control/                 # 👈 гол програм (god_mode)
 │   ├── main.py                   #    гол цикл, жестийн логик, шаардлагын хяналт
 │   ├── volume_control.py         #    дуу: pactl (Linux) / pycaw (Windows) / osascript (macOS)
-│   ├── brightness_control.py     #    гэрэл: brightnessctl (Linux)
+│   ├── brightness_control.py     #    гэрэл: brightnessctl (Linux) / дотоод дэлгээрийн гэрэл (macOS)
 │   ├── arrowkey.py               #    сум: xdotool/wtype (Linux) / pyautogui (бусад)
 │   └── requirements.txt          #    шаардлагатай Python номын сангууд
 ├── models/
 │   └── hand_landmarker.task      # MediaPipe гар таних загвар (git-д багтсан)
-├── volume_control.py             # хуучин нэг файлын хувилбар (legacy)
-├── requirements.txt              # хуучин хувийн шаардлага
 ├── README.md                     # энэ файл
 └── .gitignore
 ```
@@ -437,7 +442,7 @@ python3 hand_control/main.py
 7. **Үр дүнгээ** тухайн платформын API-рүү шууд хүргэнэ:
    - Linux → `pactl` / `brightnessctl` / `xdotool`·`wtype`
    - Windows → `pycaw` / `pyautogui`
-   - macOS → `osascript` / `pyautogui`
+   - macOS → `osascript` / дотоод дэлгээрийн гэрэл (`DisplayServices`) / `pyautogui`
 
 ### Чичрэлээс хамгаалах (deadband + hysteresis)
 
@@ -567,6 +572,10 @@ pip install -r hand_control\requirements.txt
   терминал (Terminal / iTerm / VS Code) -д өгнө үү, дараа терминалыг дахин нээнэ
 - **Дуу:** `osascript -e "set volume output volume 50"` ажиллаж байгаа эсэхийг
   шалгана уу (Automation зөвшөөрөл шаардаж магадгүй)
+- **Гэрэл:** эхлэлтийн тайлан дээр `[OK] GEREL (dotood deleger)` гарвал бэлэн.
+  `[TAANI]` гарвал macOS шинэчлэлт private API-г хаасан, эсвэл **гадаад
+  monitor** (гадаад дэлгээрийг macOS энэ аргаар тохируулахгүй) байна — энэ
+  тохиолдолд BRIGHTNESS MODE идэвхгүй, бусад горим хэвээр ажиллана
 
 ## 📜 Лиценз
 

@@ -127,6 +127,7 @@ def print_requirements():
 
     # 5) ОС-ийн нэмэлт хэрэгсэл: аль үйлдэл ажиллах вэ
     print("  --- OS-iin nemelt herelse: alii uildel ajillana ---")
+    import brightness_control
     if sys.platform.startswith("linux"):
         p = shutil.which("pactl")
         if p:
@@ -180,7 +181,10 @@ def print_requirements():
         else:
             print("  [TAANI]  pyautogui (SUM)           : suugaagui")
             print("          -> ARROW MODE ajillahgui!  pip install pyautogui")
-        print("  [TAANI]  GEREL                     : zovhon Linux d ajillana")
+        if brightness_control.available():
+            print("  [OK]    GEREL (dotood deleger)     : macOS demjigdene")
+        else:
+            print("  [TAANI]  GEREL                     : oldsongui (zonov dotood deleger)")
 
     print(sep)
     if fatal:
@@ -229,6 +233,8 @@ def main():
     volume = volume_control.get_volume_pct() if ok_vol else 0
     muted = volume_control.get_mute() if ok_vol else False
     bright = brightness_control.get_brightness_pct() if ok_bri else -1
+    if bright is None:
+        bright = -1
 
     lock_pos = None
     lock_t = 0.0
@@ -371,7 +377,7 @@ def main():
                     arrow_dir = None
                     arrow_t0 = None
                     if bright < 0:
-                        status = "brightness oldsongui (Linux + brightnessctl)"
+                        status = "brightness oldsongui"
                     else:
                         status = "BRIGHTNESS baina -> PINCH+DRAG = gerald"
                     print(status)
