@@ -19,7 +19,13 @@ def preflight():
         print("  X11:     sudo pacman -S xdotool  /  sudo apt install xdotool")
         print("  Wayland: sudo pacman -S wtype")
         return False
-    return True
+    # Windows / macOS: pyautogui heregtei
+    try:
+        import pyautogui  # noqa: F401
+        return True
+    except ImportError:
+        print("pyautogui oldsongui (sum tovch): pip install pyautogui")
+        return False
 
 
 def _backend():

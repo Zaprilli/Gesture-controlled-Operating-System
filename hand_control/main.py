@@ -1,16 +1,28 @@
+import importlib.util
 import math
 import os
+import shutil
 import sys
 import time
 
-import cv2
-import mediapipe as mp
-from mediapipe.tasks.python import vision
-from mediapipe.tasks.python.core.base_options import BaseOptions
+# --- Nomyn sanuud: ali negiig bish bol shaardlagiin taylan deer garna ---
+_IMPORT_ERR = {}
 
-import arrowkey
-import brightness_control
-import volume_control
+try:
+    import cv2
+except ImportError:
+    cv2 = None
+    _IMPORT_ERR["cv2"] = "pip install opencv-python"
+
+try:
+    import mediapipe as mp
+    from mediapipe.tasks.python import vision
+    from mediapipe.tasks.python.core.base_options import BaseOptions
+except ImportError:
+    mp = None
+    vision = None
+    BaseOptions = None
+    _IMPORT_ERR["mediapipe"] = "pip install mediapipe"
 
 MODEL = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                      "..", "models", "hand_landmarker.task")
@@ -62,7 +74,135 @@ def classify_arrow(dx, dy):
     return "down" if dy > 0 else "up"
 
 
+def print_requirements():
+    """Ажиллуулахад шаардлагатай бүх зүйлийг шалгаж, дэлгэрэнгүй хэвлэнэ.
+
+    Зөвхөн ҮНДСЭН шаардлага (Python, номын сан, загвар, камера) дутуу бол
+    False буцаана; нэмэлт хэрэгсэл (pactl, brightnessctl, xdotool...) дутуу
+    бол зөвхөн анхааруулж, аль үйлдэл ажиллахгүйг хэлнэ.
+    """
+    sep = "=" * 62
+    print(sep)
+    print("  AJILLUULAHD SHAARDLAGATAI ZUIILSUUD (Requirements)")
+    print(sep)
+    fatal = []
+
+    # 1) Python хувилбар
+    ver = ".".join(map(str, sys.version_info[:3]))
+    if sys.version_info >= (3, 10):
+        print(f"  [OK]    Python 3.10+              : {ver}")
+    else:
+        print(f"  [ALDAA] Python 3.10+              : {ver} (shineer suulgana)")
+        fatal.append("Python 3.10+ байх ёстой")
+
+    # 2) Python номын сангууд
+    for mod, pip_cmd in (("cv2", "pip install opencv-python"),
+                         ("mediapipe", "pip install mediapipe")):
+        if mod in _IMPORT_ERR:
+            print(f"  [ALDAA] {mod:<25} : suugaagui -> {pip_cmd}")
+            fatal.append(pip_cmd)
+        else:
+            mv = getattr(sys.modules.get(mod), "__version__", "suusan")
+            print(f"  [OK]    {mod:<25} : {mv}")
+
+    # 3) MediaPipe загвар
+    if os.path.isfile(MODEL):
+        print("  [OK]    ZAGVAR (hand_landmarker)  : models/hand_landmarker.task")
+    else:
+        print(f"  [ALDAA] ZAGVAR (hand_landmarker)  : olddoggui -> {MODEL}")
+        fatal.append("models/hand_landmarker.task файл байх ёстой")
+
+    # 4) Вебкамер
+    if cv2 is None:
+        print("  [ -- ]  KAMERA (index 0)          : cv2 baihgui tul shalgahgui")
+    else:
+        _cap = cv2.VideoCapture(0)
+        if _cap.isOpened():
+            print("  [OK]    KAMERA (index 0)          : oldloo")
+        else:
+            print("  [ALDAA] KAMERA (index 0)          : oldohgui baina")
+            fatal.append("Вебкамер холбогдсон байх ёстой (index 0) — "
+                         "бусад процесст эзэмшүүлээгүй байх")
+        _cap.release()
+
+    # 5) ОС-ийн нэмэлт хэрэгсэл: аль үйлдэл ажиллах вэ
+    print("  --- OS-iin nemelt herelse: alii uildel ajillana ---")
+    if sys.platform.startswith("linux"):
+        p = shutil.which("pactl")
+        if p:
+            print(f"  [OK]    pactl (DUU)               : {p}")
+        else:
+            print("  [TAANI]  pactl (DUU)               : suugaagui")
+            print("          -> VOLUME MODE ajillahgui!")
+            print("             Arch: sudo pacman -S libpulse")
+            print("             Debian/Ubuntu: sudo apt install pulseaudio-utils")
+        b = shutil.which("brightnessctl")
+        if b:
+            print(f"  [OK]    brightnessctl (GEREL)     : {b}")
+        else:
+            print("  [TAANI]  brightnessctl (GEREL)     : suugaagui")
+            print("          -> BRIGHTNESS MODE ajillahgui!")
+            print("             Arch: sudo pacman -S brightnessctl")
+            print("             Debian/Ubuntu: sudo apt install brightnessctl")
+            print("             (zonov buh baiheel dahiad ajillana)")
+        x = shutil.which("xdotool") or shutil.which("wtype")
+        if x:
+            print(f"  [OK]    xdotool/wtype (SUM)       : {x}")
+        else:
+            print("  [TAANI]  xdotool/wtype (SUM)       : suugaagui")
+            print("          -> ARROW MODE ajillahgui!")
+            print("             X11:     sudo pacman -S xdotool")
+            print("             Wayland: sudo pacman -S wtype")
+    elif sys.platform == "win32":
+        has_pycaw = (importlib.util.find_spec("pycaw") is not None
+                     and importlib.util.find_spec("comtypes") is not None)
+        if has_pycaw:
+            print("  [OK]    pycaw/comtypes (DUU)      : суусан")
+        else:
+            print("  [TAANI]  pycaw/comtypes (DUU)      : suugaagui")
+            print("          -> VOLUME MODE ajillahgui!")
+            print("             pip install pycaw comtypes")
+        if importlib.util.find_spec("pyautogui") is not None:
+            print("  [OK]    pyautogui (SUM)           : суусан")
+        else:
+            print("  [TAANI]  pyautogui (SUM)           : suugaagui")
+            print("          -> ARROW MODE ajillahgui!")
+            print("             pip install pyautogui")
+        print("  [TAANI]  GEREL                     : zovhon Linux d ajillana")
+    else:  # macOS
+        if shutil.which("osascript"):
+            print("  [OK]    osascript (DUU)           : /usr/bin/osascript")
+        else:
+            print("  [TAANI]  osascript (DUU)           : oldoggui (macOS baih yostoi)")
+            print("          -> VOLUME MODE ajillahgui!")
+        if importlib.util.find_spec("pyautogui") is not None:
+            print("  [OK]    pyautogui (SUM)           : суусан")
+        else:
+            print("  [TAANI]  pyautogui (SUM)           : suugaagui")
+            print("          -> ARROW MODE ajillahgui!  pip install pyautogui")
+        print("  [TAANI]  GEREL                     : zovhon Linux d ajillana")
+
+    print(sep)
+    if fatal:
+        print("  DUTUU SHAARDLAMA:")
+        for f in fatal:
+            print(f"    - {f}")
+        print(sep)
+        return False
+    print("  Bund buh UNDSEN shaardlaga hangagsan - ajillulj bolno!")
+    print(sep)
+    return True
+
+
 def main():
+    if not print_requirements():
+        print(">> Shaardlagaanii dutugaar duusav.")
+        return
+
+    import arrowkey
+    import brightness_control
+    import volume_control
+
     ok_vol = volume_control.preflight()
     ok_bri = brightness_control.preflight()
     ok_arr = arrowkey.preflight()
@@ -116,8 +256,8 @@ def main():
     status = ""
 
     print(f"Start: vol={volume}% mute={muted} bright={bright}%")
-    print("1 horuu = VOLUME | 2 horuu = BRIGHTNESS | chigchii+erxii pinch = ARROW")
-    print("TAP/DRAG = hemjee | indeks horuu = sum | space=pause | q=quit")
+    print("1 horuu = VOLUME | 2 horuu = BRIGHTNESS | 3 horuu / erxii+zungia pinch = ARROW")
+    print("TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit")
 
     while cap.isOpened():
         ok, frame = cap.read()
@@ -231,7 +371,7 @@ def main():
                     arrow_dir = None
                     arrow_t0 = None
                     if bright < 0:
-                        status = "brightness oldsongui: sudo pacman -S brightnessctl"
+                        status = "brightness oldsongui (Linux + brightnessctl)"
                     else:
                         status = "BRIGHTNESS baina -> PINCH+DRAG = gerald"
                     print(status)

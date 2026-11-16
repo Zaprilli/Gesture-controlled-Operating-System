@@ -8,26 +8,34 @@ if sys.platform == "win32":
     try:
         from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
         from comtypes import CLSCTX_ALL
-    except ImportError:
-        print("pycaw suulgaagui baina:  pip install pycaw comtypes")
-        sys.exit(1)
 
-    _devices = AudioUtilities.GetSpeakers()
-    _iface = _devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    _volume = _iface.QueryInterface(IAudioEndpointVolume)
+        _devices = AudioUtilities.GetSpeakers()
+        _iface = _devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        _volume = _iface.QueryInterface(IAudioEndpointVolume)
+    except ImportError:
+        # pycaw/comtypes suugaagui: preflight() medeglene, program ajillana
+        _volume = None
 
     def get_volume_pct():
+        if _volume is None:
+            return 0
         return round(_volume.GetMasterVolumeLevelScalar() * 100)
 
     def set_volume_pct(pct):
         pct = max(0, min(100, int(pct)))
+        if _volume is None:
+            return pct
         _volume.SetMasterVolumeLevelScalar(pct / 100.0, None)
         return pct
 
     def get_mute():
+        if _volume is None:
+            return False
         return bool(_volume.GetMute())
 
     def toggle_mute():
+        if _volume is None:
+            return False
         muted = not get_mute()
         _volume.SetMute(1 if muted else 0, None)
         return muted
@@ -90,6 +98,9 @@ else:
 
 
 def preflight():
+    if sys.platform == "win32" and _volume is None:
+        print("pycaw/comtypes suugaagui (DUU): pip install pycaw comtypes")
+        return False
     if sys.platform == "darwin" and shutil.which("osascript") is None:
         print("osascript oldsongui (macOS baih yostoi)")
         return False

@@ -12,10 +12,14 @@ def _run(args):
 
 
 def preflight():
+    if not sys.platform.startswith("linux"):
+        print("GEREL tohiruulah ni zovhon Linux (brightnessctl) d ajillana.")
+        return False
     if shutil.which("brightnessctl") is None:
         print("brightnessctl oldsongui:")
         print("  Arch:   sudo pacman -S brightnessctl")
         print("  Debian: sudo apt install brightnessctl")
+        print("  (zonov buh baiheel dahiad ajillana)")
         return False
     return True
 
