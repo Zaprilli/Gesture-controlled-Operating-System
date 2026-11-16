@@ -135,7 +135,7 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 |---|---|---|---|
 | **Дуу (VOLUME)** | `pactl` — Arch: `sudo pacman -S libpulse` / Debian: `sudo apt install pulseaudio-utils` | `pycaw` + `comtypes` (pip-ээр сууна) | `osascript` (системд байрлай) |
 | **Гэрэл (BRIGHTNESS)** | `brightnessctl` — `sudo pacman -S brightnessctl` / `sudo apt install brightnessctl` (**зоосв нотбук**) | ❌ ажиллахгүй | ✅ дотоод дэлгээрийн гэрэл (суулгах шаардлагагүй) |
-| **Сум (ARROW)** | `xdotool` (X11) эсвэл `wtype` (Wayland) | `pyautogui` (pip-ээр сууна) | `pyautogui` (pip-ээр сууна) |
+| **Сум (ARROW)** | `xdotool` (X11) / `wtype` (Wayland) — **session-аас автоматаар сонгодог** | `pyautogui` (pip-ээр сууна) | `pyautogui` (pip-ээр сууна) |
 | **Камер** | `/dev/video*` + `video` групп эрх | Camera privacy → Desktop apps | System Settings → Camera зөвшөөрөл |
 
 - **WSL** нэмэлтээр: камерыг Windows-оос дамжуулах (`usbipd-win`), дуу/цонх = WSLg
@@ -357,7 +357,7 @@ python3 hand_control/main.py
   --- OS-iin nemelt herelse: alii uildel ajillana ---
   [OK]    pactl (DUU)               : /usr/bin/pactl
   [OK]    brightnessctl (GEREL)     : /usr/bin/brightnessctl
-  [OK]    xdotool/wtype (SUM)       : /usr/bin/xdotool
+  [OK]    SUM (wayland)             : /usr/bin/wtype
 ==============================================================
   Bund buh UNDSEN shaardlaga hangagsan - ajillulj bolno!
 ==============================================================
@@ -410,7 +410,7 @@ TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit
 │   ├── main.py                   #    гол цикл, жестийн логик, шаардлагын хяналт
 │   ├── volume_control.py         #    дуу: pactl (Linux) / pycaw (Windows) / osascript (macOS)
 │   ├── brightness_control.py     #    гэрэл: brightnessctl (Linux) / дотоод дэлгээрийн гэрэл (macOS)
-│   ├── arrowkey.py               #    сум: xdotool/wtype (Linux) / pyautogui (бусад)
+│   ├── arrowkey.py               #    сум: session-аас xdotool (X11)/wtype (Wayland) / pyautogui
 │   └── requirements.txt          #    шаардлагатай Python номын сангууд
 ├── models/
 │   └── hand_landmarker.task      # MediaPipe гар таних загвар (git-д багтсан)
@@ -440,7 +440,7 @@ python3 hand_control/main.py
 6. **ARROW** → индексийн үзүүрийн хөдөлгөөнийг `ARROW_DEAD` → `ARROW_HOLD_S`
    → `ARROW_COOLDOWN_S` шүүлтээр дамжуулж товчлуур дарна
 7. **Үр дүнгээ** тухайн платформын API-рүү шууд хүргэнэ:
-   - Linux → `pactl` / `brightnessctl` / `xdotool`·`wtype`
+   - Linux → `pactl` / `brightnessctl` / `xdotool`·`wtype` (session-аас өөрөө сонгоно)
    - Windows → `pycaw` / `pyautogui`
    - macOS → `osascript` / дотоод дэлгээрийн гэрэл (`DisplayServices`) / `pyautogui`
 
@@ -512,6 +512,11 @@ brightnessctl -m        # утга гарвал болно (жишээ: intel_ba
 
 #### Сум (ARROW) ажиллахгүй байна
 
+Программ **ийм дарааллаар өөрөө сонгодог**: `XDG_SESSION_TYPE` (эсвэл
+`WAYLAND_DISPLAY`/`DISPLAY`) → **Wayland бол `wtype`**, **X11 бол `xdotool`**
+(аль нь нь суусан байна). Эхлэлтийн тайлан дээр ямар session илрүүлсэн, аль
+хэрэгсэл сонгогдсоныг `SUM (wayland)` / `SUM (x11)` мөрөөр харна уу.
+
 ```bash
 echo $XDG_SESSION_TYPE     # x11 | wayland
 xdotool --version           # X11 дээр
@@ -519,7 +524,9 @@ wtype --version             # Wayland дээр
 ```
 
 - Аль нь ч байхгүй бол: `sudo pacman -S xdotool wtype` /
-  `sudo apt install xdotool wtype`
+  `sudo apt install xdotool wtype` (эсвэл **session-д таарах нэгийг** нь суулга)
+- Session-тай **тохирохгүй** хэрэгсэл суусан бол (`wtype` байхад X11 гэх мэт)
+  программ анхааруулга хэвлэнэ — тэгэхээр суулгахаа зөв сонгоно уу
 - **Сум нь фокустай цонх руу явна** — зорилготой программыа идэвхтэй болгоно уу
 
 #### `Could not find the Qt platform plugin "wayland"`

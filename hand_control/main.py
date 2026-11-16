@@ -127,6 +127,7 @@ def print_requirements():
 
     # 5) ОС-ийн нэмэлт хэрэгсэл: аль үйлдэл ажиллах вэ
     print("  --- OS-iin nemelt herelse: alii uildel ajillana ---")
+    import arrowkey
     import brightness_control
     if sys.platform.startswith("linux"):
         p = shutil.which("pactl")
@@ -146,11 +147,13 @@ def print_requirements():
             print("             Arch: sudo pacman -S brightnessctl")
             print("             Debian/Ubuntu: sudo apt install brightnessctl")
             print("             (zonov buh baiheel dahiad ajillana)")
-        x = shutil.which("xdotool") or shutil.which("wtype")
-        if x:
-            print(f"  [OK]    xdotool/wtype (SUM)       : {x}")
+        be = arrowkey.backend()
+        if be:
+            lbl = f"SUM ({arrowkey.session_type()})"
+            print(f"  [OK]    {lbl:<25} : {shutil.which(be) or be}")
         else:
-            print("  [TAANI]  xdotool/wtype (SUM)       : suugaagui")
+            lbl = f"SUM ({arrowkey.session_type()})"
+            print(f"  [TAANI]  {lbl:<25} : xdotool/wtype suugaagui")
             print("          -> ARROW MODE ajillahgui!")
             print("             X11:     sudo pacman -S xdotool")
             print("             Wayland: sudo pacman -S wtype")
