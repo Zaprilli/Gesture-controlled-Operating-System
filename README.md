@@ -20,9 +20,6 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 - [🚀 Ажиллуулах заавар](#-ажиллуулах-заавар)
   - [🪟 Windows](#-windows)
     - [WSL](#-wsl-windows-subsystem-for-linux)
-  - [🐧 Linux](#-linux)
-    - [Oracle VM VirtualBox](#-oracle-vm-virtualbox-дээр-linux)
-  - [🍎 macOS](#-macos)
   - [▶️ Эхлэлтийн тайлан](#-эхлэлтийн-тайлан)
 - [⚙️ Тохиргоо](#-тохиргоо)
 - [📁 Төслийн бүтэц](#-төслийн-бүтэц)
@@ -40,8 +37,7 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 - 🤏 **TAP** — чимхээд хурдан тайлахад дуу тагдана; **DRAG** — чимхсэн хэвээр
   чирэхэд дуу/гэрэл өөрчлөгдөнө
 - ⏸️ `space` = түр зогсоох/үргэлжлүүлэх, `q` = гарах
-- 🖥️ **Windows 10/11** (шууд), **WSL**, **Linux** (Arch/Debian/Fedora болон
-  **Oracle VM VirtualBox** дээрх гост), **macOS**
+- 🖥️ **Windows 10/11** (шууд, **WSL** хамт)
 - 📋 Аливаа **шинэ горимд орохын өмнө** доорх шаардлагын тайланг хэвлэж,
   дутуу зүйлийг суулгах командтай нь хамт харуулна
 
@@ -65,14 +61,14 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 - Чимхсэн байхад хурууны тоог тооцохгүй (чимхэлт = ARROW-ийн дохио)
 - **Горим автоматаар гарахгүй** — өөр горимд орохын тулд шинэ дохиогаа дахин
   бариарай. 3 горим **харилцан орлуулна** (нэгэн зэрэг 2 горим ажиллахгүй)
-- Атгасан гар / 0 хуруу = ямар ч горимд орохгүй (зориулалтын командгүй)
+- Атгасан гар / 0 хуруу = ямар ч горимд орохгүй (зориулалтын.commandsгүй)
 
 ### 2️⃣ VOLUME MODE (1 хуруу)
 
 | Дохиолол | Хийх хөдөлгөөн | Үр дүн |
 |---|---|---|
 | **TAP** | Эрхий+зангиа чимхээд **0.6с-аас хурдан**, чирэлтгүйгээр тайлах | Дуу тагдана / асана (mute toggle) |
-| **DRAG** | Чимхсэн хэвээр гараа **дээш/доош** чирэх | Дуу нэмэгдэнэ / хасагдана |
+| **DRAG** | Чимхсэн хэвээр гараа **дээш/доос** чирэх | Дуу нэмэгдэнэ / хасагдана |
 
 - Чирсэн бол тайлахад **mute болохгүй** (зөвхөн DRAG)
 - Дуу тагтай байхад чирвэл **таг цуцлагдана**
@@ -82,13 +78,13 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 
 | Дохиолол | Хийх хөдөлгөөн | Үр дүн |
 |---|---|---|
-| **DRAG** | Чимхсэн хэвээр гараа **дээш/доош** чирэх | Дэлгэцийн гэрэл нэмэгдэнэ / хасагдана |
+| **DRAG** | Чимхсэн хэвээр гараа **дээш/доос** чирэх | Дэлгэцийн гэрэл нэмэгдэнэ / хасагдана |
 
 - Зөвхөн **зоосв нотбук** дээр ажиллана:
   - 🐧 Linux → **`brightnessctl`**
   - 🍎 macOS → **дотоод дэлгээрийн гэрэл** (суулгах шаардлагагүй, Apple-ийн
     `DisplayServices`/`CoreDisplay` API; зөвхөн MacBook/iMac-ийн **дотоод**
-    дэлгээрийг дэмжинэ — гадаад monitor биш)
+    дэлгэнийг дэмжинэ — гадаад monitor биш)
   - 🪟 Windows / виртуал машинд гэрлийн тохиргоо байхгүй тул уг горим идэвхгүй
     байна
 - Гэрлийн доод хязгаар **1%**
@@ -116,36 +112,33 @@ MediaPipe Hand Landmarker ашиглан гарын **21 цэгийг** (0–20)
 
 > ⚠️ `space`/`q` нь **OpenCV цонх фокустай байхад** л орно. ARROW ашиглахдаа
 > бусад програм руу шилжсэн бол сум товч ажиллана, харин `space`/`q`-г
-> буцааж цонхоо сонголгон дарна уу.
+> буцааж цонхоо сонголгон дарахад орно.
 
 ## 💻 Шаардлага
 
 ### Үндсэн (бүх платформ дээр ижил)
 
-| Зүйл | Юунд хэрэгтэй | Шалгах / суулгах |
+| Зүйл | Юунд хэрэгтей | Шалгах / суулгах |
 |---|---|---|
 | **Python 3.10+** | гол хэл | `python3 --version` |
-| **opencv-python, mediapipe** | камер + гар таних загвар | `pip install -r hand_control/requirements.txt` (эсвэл ОС-ийнхээ `requirements-linux.txt` / `requirements-windows.txt` / `requirements-macos.txt`) |
+| **opencv-python, mediapipe** | камер + гар таних загвар | `pip install -r hand_control/requirements.txt` (`hand_control/requirements-windows.txt`) |
 | **`models/hand_landmarker.task`** | гар таних загвар | Төсөлд **багтсан**, татаж авах шаардлагагүй |
-| **Вебкамер (index 0)** | нүд | Linux: `ls /dev/video*`; Windows: Camera privacy шалгах |
+| **Вебкамер (index 0)** | нүд | Windows: Camera privacy → Desktop apps |
 
-### ОС-ийн нэмэлт хэрэгсэл (алийг нь суулгаагүй бол тухайн үйлдэл ажиллахгүй)
+### ОС-ийн нэмэлт хэрэгсэл (алийг нь суулгаагүй бол тухайн үйлдл ажиллахгүй)
 
-| Үйлдэл | 🐧 Linux | 🪟 Windows | 🍎 macOS |
-|---|---|---|---|
-| **Дуу (VOLUME)** | `pactl` — Arch: `sudo pacman -S libpulse` / Debian: `sudo apt install pulseaudio-utils` | `pycaw` + `comtypes` (pip-ээр сууна) | `osascript` (системд байрлай) |
-| **Гэрэл (BRIGHTNESS)** | `brightnessctl` — `sudo pacman -S brightnessctl` / `sudo apt install brightnessctl` (**зоосв нотбук**) | ❌ ажиллахгүй | ✅ дотоод дэлгээрийн гэрэл (суулгах шаардлагагүй) |
-| **Сум (ARROW)** | `xdotool` (X11) / `wtype` (Wayland) — **session-аас автоматаар сонгодог** | `pyautogui` (pip-ээр сууна) | `pyautogui` (pip-ээр сууна) |
-| **Камер** | `/dev/video*` + `video` групп эрх | Camera privacy → Desktop apps | System Settings → Camera зөвшөөрөл |
+| Үйлдэл | 🪟 Windows |
+|---|---|
+|---|---|
+| **Дуу (VOLUME)** | `pycaw` + `comtypes` (pip-ээр сууна) |
+| **Гэрэл (BRIGHTNESS)** | ❌ ажиллахгүй |
+| **Сум (ARROW)** | `pyautogui` (pip-ээр сууна) |
+| **Камер** | Camera privacy → Desktop apps |
 
 - **WSL** нэмэлтээр: камерыг Windows-оос дамжуулах (`usbipd-win`), дуу/цонх = WSLg
-- **Oracle VM VirtualBox** нэмэлтээр: **Extension Pack** (камер дамжуулалт),
-  гост дээрх камерын эрх; виртуал машинд **гэрлийн бүрэлдэхүүн байдаггүй** тул
-  BRIGHTNESS MODE ажиллахгүй (хэвийн үзэгдэл)
 
 ## 🚀 Ажиллуулах заавар
 
-**Өөрийн үйлдлийн системээ сонгоно уу:** 🪟 [Windows](#-windows) · 🐧 [Linux](#-linux) · 🍎 [macOS](#-macos)
 
 ### 0. Код татаж авах (бүх платформ)
 
@@ -200,14 +193,14 @@ python hand_control\main.py
 
 > ⚠️ PowerShell дээр `Activate.ps1` алдаа гарвал (execution policy):
 > `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`
-> командийг эхлээд гүйцэтгэнэ үү.
+> командыг эхлээд гүйцэтгэнэ үү.
 >
-> 💡 **Git Bash** ашиглах бол орчинг иймэрхүү нээнэ:
+> 💡 **Git Bash** ашиглах орчингийн иймэрхүү нээнэ:
 > `source .venv/Scripts/activate` — бусад команд (`git`, `pip`, `python`)
 > Git Bash-д ч ижил ажиллана.
 
 > 📷 **Анх удаа** камер ашиглахыг Windows асуух болно —
-> `Settings → Privacy & Security → Camera → Desktop apps`-ийг **zөвхөрүүлнэ үү**.
+> `Settings → Privacy & Security → Camera → Desktop apps`-ийг **зөвхөрүүлнэ үү**.
 
 > ❌ **Гэрэл (BRIGHTNESS)** Windows дээр ажиллахгүй — энэ нь хэвийн (дэмжих
 > платформ: Linux / macOS).
@@ -251,7 +244,6 @@ sudo apt install -y python3 python3-venv python3-pip \
 
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r hand_control/requirements-linux.txt
 
 python3 hand_control/main.py
 ```
@@ -260,117 +252,12 @@ python3 hand_control/main.py
 > дээр WSLg байхгүй — X-сэрвэр (VcXsrv / X410) суулгах шаардлагатай.
 >
 > 📷 Камер нэгэн зэрэг **нэг л** процесст хамаарна — Teams/Zoom ашиглаж
-> байвал WSL-д нээгдэхгүй. Computer sleep-ээс буцаад ирвэл `usbipd attach`-ийг
+> байвал WSDL-д нээгдэхгүй. Computer sleep-ээс буцаад ирвэл `usbipd attach`-ийг
 > дахин гүйцэтгэнэ үү.
 >
 > 🔊 Дуу: `pactl info` → `Server String: ... pulse/native` гарвал WSLg аудио
-> идэвхтэй. Windows 10 дээр байхгүй тул Windows руу шилжинэ үү.
-
----
-
-### 🐧 Linux
-
-```bash
-# 1. Номын сангууд
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r hand_control/requirements-linux.txt
-
-# 2. Дуу (VOLUME) — тухайн дистрибуциас:
-```
-
-| Дистрибуци | Команд |
-|---|---|
-| Arch / Manjaro / CachyOS | `sudo pacman -S libpulse` (PipeWire: `pipewire-pulse`) |
-| Debian / Ubuntu | `sudo apt install pulseaudio-utils` |
-| Fedora | `sudo dnf install pulseaudio-utils` |
-
-```bash
-# 3. Гэрэл + сум (зоосв нотбук; сум = X11 буюу Wayland-аас хамаарна)
-sudo pacman -S brightnessctl xdotool wtype     # Arch
-sudo apt install brightnessctl xdotool wtype   # Debian/Ubuntu
-
-# 4. Камерын эрх (нэг удаа; дараа сессиондоо дахин нэвтрэх)
-sudo usermod -aG video $USER
-
-# 5. Ажиллуулна
-python3 hand_control/main.py
-```
-
-> 💡 **KDE / GNOME (Wayland)** дээр ийм warning гарч болно —
-> `Could not find the Qt platform plugin "wayland"`. Цонх **гарч л байвал
-> асуудалгүй**. Урьдчилан дарахыг хүсвэл:
-> ```bash
-> QT_QPA_PLATFORM=xcb python3 hand_control/main.py
-> ```
-
----
-
-#### 📦 Oracle VM VirtualBox дээр Linux
-
-Нэмэлтээрээ: **Oracle VM VirtualBox** + **Extension Pack** (камер дамжуулалт
-зөвхөн Extension Pack-аас хамаарна).
-
-**1. VirtualBox + Extension Pack суулгах**
-
-1. [virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)-оос
-   VirtualBox болон **VirtualBox Extension Pack** (All platforms) татаж авна
-2. Extension Pack-ийг суулгах: VirtualBox → `File → Extensions → Install`
-   (эсвэл `sudo VBoxManage extpack install VirtualBox_Extension_Pack*.vbox-extpack`)
-3. Ubuntu / Arch / бусад Linux ISO татаж аваад **гост машин үүсгэнэ**
-   (Memory ≥ 4GB, 2+ CPU зөвлөмж)
-
-**2. Камерыг гост руу дамжуулах**
-
-1. Гост **ажиллаж байх** үед менюгээс: **Devices → Webcam → Integrated Camera**
-   (санаа зовохгүйгээр идэвхжүүлнэ — гост дээр `/dev/video0` гарна)
-2. Эсвэл урьдчилан USB filter үүсгэх:
-   `Settings → USB → Add New Filter → Integrated Camera`
-3. Хэрэв **Webcam цэс байхгүй** бол: Extension Pack суугаагүй, эсвэл
-   VirtualBox хувилбар Extension Pack-ийн хувилбартайгаа таарахгүй байна
-
-**3. Гост дээр шалгах**
-
-```bash
-ls /dev/video*                                  # /dev/video0 гарвал боллоо
-groups | grep video || sudo usermod -aG video $USER   # эрх (дараа нэвтрэлт)
-pactl --version                                  # дуу (VM audio → PulseAudio/PipeWire)
-brightnessctl -m 2>/dev/null || echo "no backlight (VM — BRIGHTNESS ажиллахгүй)"
-```
-
-**4. Суулгаж ажиллуулах** (гост дээр, дээрх Linux зааврын дагуу)
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r hand_control/requirements-linux.txt
-python3 hand_control/main.py
-```
-
-> ⚠️ **Виртуал машинд гэрэл тохируулах бүрэлдэхүүн байдаггүй** (`/sys/class/backlight`
-> байхгүй) — BRIGHTNESS MODE ажиллахгүй, программ эхлэлтээрээ мэдэгдэл хэвлэнэ.
-> Бусад горим (VOLUME / ARROW) хэвээр ажиллана. Энэ нь алдаа биш юм.
->
-> 💡 Зөвлөмж: гост дээр **X11 сесс** сонговол `xdotool` шууд ажиллана;
-> Wayland бол `wtype` суулгана уу.
-
----
-
-### 🍎 macOS
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r hand_control/requirements-macos.txt
-python3 hand_control/main.py
-```
-
-- Анх удаа **камерын зөвшөөрөл** асуух болно —
-  `System Settings → Privacy & Security → Camera` (терминалд) өгнө үү
-- Дуу = `osascript`, сум = `pyautogui`, **гэрэл = дотоод дэлгээрийн гэрэл**
-  (суулгах шаардлагагүй; зөвхөн MacBook/iMac-ийн дотоод дэлгээрийг дэмжинэ)
-
----
+> идэвхтэй. Windows 10 дээр байхгүй тул Windows-д шууд суулгана уу, эсвэл Windows 11 рүү
+> шилжүүлнэ үү.
 
 ### ▶️ Эхлэлтийн тайлан
 
@@ -386,9 +273,9 @@ python3 hand_control/main.py
   [OK]    ZAGVAR (hand_landmarker)  : models/hand_landmarker.task
   [OK]    KAMERA (index 0)          : oldloo
   --- OS-iin nemelt herelse: alii uildel ajillana ---
-  [OK]    pactl (DUU)               : /usr/bin/pactl
-  [OK]    brightnessctl (GEREL)     : /usr/bin/brightnessctl
-  [OK]    SUM (wayland)             : /usr/bin/wtype
+  [OK]    pycaw/comtypes (DUU)      : суусан
+  [OK]    pyautogui (SUM)           : суусан
+  [TAANI]  GEREL                     : zovhon Linux d ajillana
 ==============================================================
   Bund buh UNDSEN shaardlaga hangagsan - ajillulj bolno!
 ==============================================================
@@ -403,13 +290,15 @@ TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit
 |---|---|
 | `[OK]` | Бэлэн байна |
 | `[ALDAA]` | **Үндсэн** шаардлага дутуу (Python / номын сан / загвар / камер) → программ зогсоно, доор юу дутуугаа гаргана |
-| `[TAANI]` | **Нэмэлт** хэрэгсэл дутуу → программ ажилласаар байна, зөвхөн тухайн үйлдэл (дуу/гэрэл/сум) идэвхгүй болно + суулгах команд |
+| `[TAANI]` | **Нэмэлт** хэрэгсэл дутуу → программ ажилласаар байна, зөвхөөн тухайн үйлдэл (дуу/гэрэл/сум) идэвхгүй болно + суулгах команд |
 | `[ -- ]` | Шалгах боломжгүй (жнь: cv2 суугаагүй) |
 
 Дутуу зүйлтэй жишээ:
 
 ```text
-  [TAANI]  pactl (DUU)               : suugaagui
+  [TAANI]  pycaw/comtypes (DUU)      : suugaagui
+          -> VOLUME MODE ajillahgui!
+             pip install pycaw comtypes
           -> VOLUME MODE ajillahgui!
              Arch: sudo pacman -S libpulse
              Debian/Ubuntu: sudo apt install pulseaudio-utils
@@ -422,13 +311,13 @@ TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit
 | Хувьсагч | Утга | Тайлбар |
 |---|---|---|
 | `ARM_HOLD_S` | `1.2` | Хурууг ийм секундээр тогтмол барихад горимд орно |
-| `LOCK_MAX_DIST` | `0.15` | 2-р гарыг сонгохдоо анхны гарын байрлалаас энэ зайд ойр байх ёстой |
+| `LOCK_MAX_DIST` | `0.15` | 2-р гарыг сонchoхдоо анхны гарын байрлалаас энэ зайд ойр байх ёстой |
 | `LOCK_TIMEOUT_S` | `2.0` | Гар алга болсон энэ хугацаанд lock хэвээрээ (дараа цуцлана) |
 | `PINCH_DIST` | `0.06` | Чимхэлтийн босго (4+8-ийн зай) |
 | `DRAG_MIN` | `0.035` | Эхлэлээс үүнээс бага хөдөлгөөн = чичрэл гэж тооцохгүй (**deadband**) |
 | `DRAG_STEP` | `0.012` | Хэмжээ солигдох доод зөрөө (**hysteresis** — чичрэлээс flip хийхгүй) |
 | `TAP_MAX_S` | `0.6` | TAP-ын дээш хугацаа: үүнээс хурдан тайлахад mute |
-| `ARROW_DEAD` | `0.08` | Сум эхлэх босго: индексийн үзүүр үүнээс бага холдохгүй бол юу ч хийхгүй |
+| `ARROW_DEAD` | `0.08` | Сум эхлэх босго: индексийн үзүүр үйнээс бага холдохгүй бол юу ч хийхгүй |
 | `ARROW_HOLD_S` | `0.35` | Чигээ (↑↓←→) ийм секунд тогтвол нэг сум дарна |
 | `ARROW_COOLDOWN_S` | `1.0` | Хоёр сумын товчийн хоорондох доод хугацаа |
 | `WIN_W`, `WIN_H` | `640`, `480` | Камерын авалт болон цонхны хэмжээ |
@@ -443,9 +332,7 @@ TAP/DRAG = hemjee | zangiin ur (8) hudulg = sum | space=pause | q=quit
 │   ├── brightness_control.py     #    гэрэл: brightnessctl (Linux) / дотоод дэлгээрийн гэрэл (macOS)
 │   ├── arrowkey.py               #    сум: session-аас xdotool (X11)/wtype (Wayland) / pyautogui
 │   ├── requirements.txt          #    бүх платформт нэг файл (энхийлмээр)
-│   ├── requirements-linux.txt    #    🐧 Linux (Arch/Debian/Fedora/WSL/VM)
-│   ├── requirements-windows.txt  #    🪟 Windows (pycaw, comtypes, pyautogui)
-│   └── requirements-macos.txt    #    🍎 macOS (pyautogui; үлдсэн нь системийнх)
+│   └── requirements-windows.txt  #    🪟 Windows (pycaw, comtypes, pyautogui)
 ├── models/
 │   └── hand_landmarker.task      # MediaPipe гар таних загвар (git-д багтсан)
 ├── README.md                     # энэ файл
@@ -460,19 +347,28 @@ python3 hand_control/main.py
 
 ## 🛠️ Ажилладаг зарчим
 
-1. **Камер** → MediaPipe загвар гарын **21 цэгийг** бодит цаг хугацаанд баримтална
-2. **Гар LOCK** — анх илрүүлсэн гар л удирдлагаа авна; нэмэлт гарыг үл тооцно
-3. **Хуруу тоолох** — 1/2/3 хуруу (эсвэл чимхэлт) барихад горим солигдоно:
-   VOLUME / BRIGHTNESS / ARROW
-4. **Чимхэлт (4+8)** — VOLUME/BRIGHTNESS горимд ажиллана:
-   хурдан чимхэлт = mute, чирэлт = дуу/гэрэлийн хэмжээ
-5. **ARROW** — зангиа хурууны үзүүрийн хөдөлгөөнөөр сумын товч дарна
-6. **Үр дүн** тухайн платформын бэкэндээр дамжин Linux (`pactl`, `brightnessctl`,
-   `xdotool`·`wtype`), Windows (`pycaw`, `pyautogui`), macOS (`osascript`,
-   дотоод дэлгээрийн гэрэл) дээр шууд идэвхилнэ
+1. **Камер** → 640×480 кадр → толин тусгал (`flip`) → MediaPipe-ийг оруулна
+2. **Hand Landmarker** загвар гарын 21 цэгийг баримтлана; бүрэн скелет
+   дугаартайгаар зурагдана — **сонгосон гар** ногоон/усан, бусад **саарал**
+3. **Гар LOCK** — анх илрүүлсэн гарын бугуйгаар lock; цэг 0-ийн байрлалаар
+   ойрхныг сонгож, сонгогдоогүй гарыг үл тооцно
+4. **Хуруу тоолох** → 1/2/3 хуруу (эсвэл чимхэлт) + `ARM_HOLD_S` барих → горим
+   солигдоно; горимд орсон дохио нэг удаа хэвлэгдэнэ
+5. **Чимхэлт (4+8)** → зөвхөн VOLUME / BRIGHTNESS горимд:
+   - эхлэл → байрлал + цаг хадгална (энэ үед **юу ч өөрчлөхгүй**)
+   - `DRAG_MIN`-ээс холдвол **DRAG** (хуримтлалгүй: `disp = эхлэл_y − одоогийн_y`)
+   - тайлахад: `TAP_MAX_S`-аас хурдан + чирээгүй бол = **mute** (зөвхөн VOLUME)
+6. **ARROW** → индексийн үзүүрийн хөдөлгөөнийг `ARROW_DEAD` → `ARROW_HOLD_S`
+   → `ARROW_COOLDOWN_S` шүүлтээр дамжуулж товчлуур дарна
+7. **Үр дүн** тухайн платформын API-рүү шууд хүргэнэ:
+   - Windows → `pycaw` / `pyautogui`
 
-Гарын байрлал өөрчлөгдөхөд дасан зохицохын тулд хөдөлгөөнийг эхлэл
-байрлалаасаа **харьцангуй** тооцож, чичрэлээс хамгаалах шүүлттэй.
+### Чичрэлээс хамгаалах (deadband + hysteresis)
+
+- **Deadband** (`DRAG_MIN`) — эхлэлээс үүнээс бага холдоогүй бол *нягтхан* гэж
+  үзэж тооцохгүй
+- **Hysteresis** (`DRAG_STEP`) — сүүлд хэрэглэсэнээс үүнээс бага зөрөөгөөр
+  байвал дахин тохируулахгүй → чичрэлээс дуу «ховхрох»гүй
 
 ## 🔧 Асуудал шийдвэрлэх
 
@@ -509,57 +405,6 @@ OpenCV цонх **фокустай** байх ёстой — цонхоо дар
 (ARROW MODE-д бусад руу шилжсэн бол сум хэвээр ажиллана, `space`/`q` зөвхөн
 цонхоо буцааж сонголгон дарахад орно.)
 
-### 🐧 Linux
-
-#### `pactl oldsongui` / дуу өөрчлөгдөхгүй байна
-
-| Дистрибуци | Команд |
-|---|---|
-| Arch / Manjaro / CachyOS | `sudo pacman -S libpulse` (PipeWire: `sudo pacman -S pipewire-pulse`) |
-| Debian / Ubuntu | `sudo apt install pulseaudio-utils` |
-| Fedora | `sudo dnf install pulseaudio-utils` |
-
-PipeWire дээр дуугүй бол: `systemctl --user restart pipewire-pulse`.
-Зөв sink сонгогдсон эсэх: `pactl get-sink-volume @DEFAULT_SINK@`.
-
-#### `brightnessctl oldsongui` / гэрэл өөрчлөгдөхгүй
-
-```bash
-brightnessctl -m        # утга гарвал болно (жишээ: intel_backlight,...,79%,...)
-```
-
-- Зөвхөн **зоосв нотбук** дээр ажиллана — **desktop** компьютерт backlight
-  байхгүй бол BRIGHTNESS MODE идэвхгүй байна (мэдэгдэл хэвлэгдэнэ)
-- Эрх дутуу бол: `sudo usermod -aG video $USER` (дараа сессиондоо дахин нэвтрэх)
-- **Virtual Machine** дээр backlight байдаггүй → хэвийн үзэгдэл
-
-#### Сум (ARROW) ажиллахгүй байна
-
-Программ **ийм дарааллаар өөрөө сонгодог**: `XDG_SESSION_TYPE` (эсвэл
-`WAYLAND_DISPLAY`/`DISPLAY`) → **Wayland бол `wtype`**, **X11 бол `xdotool`**
-(аль нь нь суусан байна). Эхлэлтийн тайлан дээр ямар session илрүүлсэн, аль
-хэрэгсэл сонгогдсоныг `SUM (wayland)` / `SUM (x11)` мөрөөр харна уу.
-
-```bash
-echo $XDG_SESSION_TYPE     # x11 | wayland
-xdotool --version           # X11 дээр
-wtype --version             # Wayland дээр
-```
-
-- Аль нь ч байхгүй бол: `sudo pacman -S xdotool wtype` /
-  `sudo apt install xdotool wtype` (эсвэл **session-д таарах нэгийг** нь суулга)
-- Session-тай **тохирохгүй** хэрэгсэл суусан бол (`wtype` байхад X11 гэх мэт)
-  программ анхааруулга хэвлэнэ — тэгэхээр суулгахаа зөв сонгоно уу
-- **Сум нь фокустай цонх руу явна** — зорилготой программыа идэвхтэй болгоно уу
-
-#### `Could not find the Qt platform plugin "wayland"`
-
-Зөвхөн **warning** — цонх гарч байвал асуудалгүй. Гарахгүй бол:
-
-```bash
-QT_QPA_PLATFORM=xcb python3 hand_control/main.py
-```
-
 ### 🪟 Windows
 
 #### `pycaw` / `pyautogui` талаарх мэдэгдэл гарч байна
@@ -568,7 +413,7 @@ QT_QPA_PLATFORM=xcb python3 hand_control/main.py
 pip install -r hand_control\requirements-windows.txt
 ```
 
-Программ эхлэлтээрээ аль модулийг суулгахаа хэвлэж өгнө — тухайн командыг
+Программ эхлэлтээрээ аль модулийг суулгахаа хэвлэж өгнө — тухайнcommandsг
 гүйцэтгээд дахин ажиллуулна уу.
 
 #### Камер олдохгүй байна (зохих зөвшөөрөл)
@@ -593,19 +438,8 @@ sudo apt install pulseaudio-utils
 pactl info     # "Server String: ... pulse/native" гарвал WSLg аудио идэвхтэй
 ```
 
-Windows 10 дээр WSLg байхгүй → Windows-д шууд суулгана уу, эсвэл Windows 11 рүү
+Windows 10 дээр WSLg байхгүй → Windows-аас шууд суулгана уу, эсвэл Windows 11 рүү
 шилжүүлнэ үү.
-
-### 🍎 macOS
-
-- **Камерын зөвшөөрөл:** `System Settings → Privacy & Security → Camera`-аас
-  терминал (Terminal / iTerm / VS Code) -д өгнө үү, дараа терминалыг дахин нээнэ
-- **Дуу:** `osascript -e "set volume output volume 50"` ажиллаж байгаа эсэхийг
-  шалгана уу (Automation зөвшөөрөл шаардаж магадгүй)
-- **Гэрэл:** эхлэлтийн тайлан дээр `[OK] GEREL (dotood deleger)` гарвал бэлэн.
-  `[TAANI]` гарвал macOS шинэчлэлт private API-г хаасан, эсвэл **гадаад
-  monitor** (гадаад дэлгээрийг macOS энэ аргаар тохируулахгүй) байна — энэ
-  тохиолдолд BRIGHTNESS MODE идэвхгүй, бусад горим хэвээр ажиллана
 
 ## 📜 Лиценз
 
