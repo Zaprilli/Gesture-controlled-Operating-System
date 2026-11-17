@@ -30,7 +30,7 @@ MODEL = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 WINDOW_NAME = "Hand Control (q=quit, space=pause)"
 WIN_W, WIN_H = 640, 480
 
-ARM_HOLD_S = 1.2
+ARM_HOLD_S = 2
 LOCK_MAX_DIST = 0.15
 LOCK_TIMEOUT_S = 2.0
 
@@ -40,7 +40,7 @@ DRAG_STEP = 0.012
 TAP_MAX_S = 0.6
 
 ARROW_HOLD_S = 0.35
-ARROW_COOLDOWN_S = 1.0
+ARROW_COOLDOWN_S = 5.0
 ARROW_DEAD = 0.08
 ARROW_STEP_PX = 60
 
