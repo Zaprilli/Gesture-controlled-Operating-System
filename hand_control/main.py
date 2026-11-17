@@ -402,6 +402,9 @@ def main():
                     arrow_last = now
                     status = "ARROW baina -> indeks horuu = up/down/left/right"
                     print(status)
+            elif nf >= 4:
+                # 4+ хуруу байвал юу ч хийхгүй (mode/actionui aguulana)
+                pass
             else:
                 arm_t0 = None
                 arm2_t0 = None
